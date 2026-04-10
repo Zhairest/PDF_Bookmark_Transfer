@@ -1,0 +1,98 @@
+<svg width="1280" height="760" viewBox="0 0 1280 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="140" y1="60" x2="1120" y2="700" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7FAFC"/>
+      <stop offset="1" stop-color="#E6EEF7"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="230" y1="150" x2="1030" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <filter id="shadow" x="120" y="70" width="1040" height="620" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#0F172A" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .title { font: 700 30px "SF Pro Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+      .subtitle { font: 500 15px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #475569; }
+      .label { font: 600 14px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+      .body { font: 500 14px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #334155; }
+      .small { font: 500 12px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #64748B; }
+      .button { font: 700 14px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: white; }
+      .button2 { font: 600 13px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F172A; }
+      .chip { font: 700 12px "SF Pro Text", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; fill: #0F766E; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="760" fill="url(#bg)"/>
+  <circle cx="188" cy="126" r="76" fill="#DDEAFE"/>
+  <circle cx="1090" cy="104" r="58" fill="#DBF4EE"/>
+  <circle cx="1142" cy="648" r="96" fill="#E0E7FF"/>
+
+  <g filter="url(#shadow)">
+    <rect x="160" y="100" width="960" height="560" rx="28" fill="white"/>
+  </g>
+
+  <rect x="160" y="100" width="960" height="66" rx="28" fill="#F8FAFC"/>
+  <rect x="160" y="138" width="960" height="522" rx="0" fill="white"/>
+  <circle cx="196" cy="133" r="7" fill="#FB7185"/>
+  <circle cx="220" cy="133" r="7" fill="#FBBF24"/>
+  <circle cx="244" cy="133" r="7" fill="#34D399"/>
+
+  <text x="286" y="141" class="title">PDF 目录转移</text>
+  <text x="286" y="162" class="subtitle">将目录来源 PDF 的书签复制到高清内容 PDF，同时保留原始高清页面</text>
+
+  <rect x="194" y="194" width="606" height="404" rx="22" fill="#F8FAFC"/>
+  <rect x="824" y="194" width="262" height="404" rx="22" fill="#F8FAFC"/>
+
+  <text x="224" y="230" class="label">文件设置</text>
+  <text x="852" y="230" class="label">转换预览</text>
+
+  <rect x="224" y="250" width="118" height="30" rx="15" fill="#DCFCE7"/>
+  <text x="246" y="270" class="chip">默认一键转换</text>
+
+  <text x="224" y="316" class="label">高清内容 PDF</text>
+  <rect x="224" y="330" width="430" height="46" rx="14" fill="white" stroke="#CBD5E1"/>
+  <text x="242" y="358" class="body">/Users/demo/high-res-export.pdf</text>
+  <rect x="668" y="330" width="104" height="46" rx="14" fill="#E2E8F0"/>
+  <text x="694" y="358" class="button2">选择文件</text>
+
+  <text x="224" y="408" class="label">目录来源 PDF</text>
+  <rect x="224" y="422" width="430" height="46" rx="14" fill="white" stroke="#CBD5E1"/>
+  <text x="242" y="450" class="body">/Users/demo/bookmark-source.pdf</text>
+  <rect x="668" y="422" width="104" height="46" rx="14" fill="#E2E8F0"/>
+  <text x="694" y="450" class="button2">选择文件</text>
+
+  <text x="224" y="500" class="label">保存位置</text>
+  <rect x="224" y="514" width="430" height="46" rx="14" fill="white" stroke="#CBD5E1"/>
+  <text x="242" y="542" class="body">/Users/demo/output</text>
+  <rect x="668" y="514" width="104" height="46" rx="14" fill="#E2E8F0"/>
+  <text x="694" y="542" class="button2">选择位置</text>
+
+  <text x="852" y="278" class="small">输出文件</text>
+  <text x="852" y="306" class="body">high-res-export_with_bookmarks.pdf</text>
+
+  <rect x="852" y="334" width="206" height="86" rx="18" fill="white" stroke="#DBEAFE"/>
+  <rect x="872" y="354" width="32" height="40" rx="8" fill="url(#accent)"/>
+  <path d="M883 381L891 388L905 368" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="920" y="370" class="label">保留高清页面</text>
+  <text x="920" y="392" class="small">page content stays untouched</text>
+
+  <rect x="852" y="438" width="206" height="86" rx="18" fill="white" stroke="#CCFBF1"/>
+  <rect x="872" y="458" width="32" height="40" rx="8" fill="#14B8A6"/>
+  <path d="M881 468H895" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M881 478H896" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M881 488H892" stroke="white" stroke-width="3.2" stroke-linecap="round"/>
+  <text x="920" y="474" class="label">复制 PDF 目录</text>
+  <text x="920" y="496" class="small">outline tree and jump targets</text>
+
+  <text x="852" y="556" class="label">结果</text>
+  <text x="852" y="581" class="body">高清页面 + 左侧目录 + 中文标题</text>
+
+  <rect x="224" y="614" width="548" height="20" rx="10" fill="#E2E8F0"/>
+  <rect x="224" y="614" width="430" height="20" rx="10" fill="url(#accent)"/>
+
+  <rect x="892" y="614" width="166" height="50" rx="18" fill="url(#accent)"/>
+  <text x="938" y="645" class="button">开始转换</text>
+
+  <text x="224" y="650" class="small">默认保存到高清内容 PDF 所在目录；如目标文件已存在，会先弹窗确认是否覆盖。</text>
+</svg>

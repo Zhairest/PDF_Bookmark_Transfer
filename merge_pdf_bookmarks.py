@@ -11,6 +11,17 @@ from typing import Iterable
 from pypdf import PdfReader, PdfWriter
 from pypdf.generic import Destination, Fit, NameObject, create_string_object
 
+DEFAULT_OUTPUT_SUFFIX = "_with_bookmarks.pdf"
+INVALID_FILENAME_CHARS = set('<>:"/\\|?*')
+WINDOWS_RESERVED_NAMES = {
+    "CON",
+    "PRN",
+    "AUX",
+    "NUL",
+    *(f"COM{i}" for i in range(1, 10)),
+    *(f"LPT{i}" for i in range(1, 10)),
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -23,13 +34,13 @@ def parse_args() -> argparse.Namespace:
         "--content",
         required=True,
         type=Path,
-        help="PDF whose page content should be kept, e.g. the high-resolution typeA file.",
+        help="PDF whose page content should be kept, for example the high-resolution export.",
     )
     parser.add_argument(
         "--bookmarks",
         required=True,
         type=Path,
-        help="PDF whose outline/bookmarks should be copied, e.g. the typeB file.",
+        help="PDF whose outline/bookmarks should be copied, for example the export with sidebar bookmarks.",
     )
     parser.add_argument(
         "--output",
@@ -42,6 +53,74 @@ def parse_args() -> argparse.Namespace:
         help="Overwrite the output file if it already exists.",
     )
     return parser.parse_args()
+
+
+def default_output_filename(content_path: Path) -> str:
+    return f"{content_path.stem}{DEFAULT_OUTPUT_SUFFIX}"
+
+
+def normalize_output_filename(filename: str) -> str:
+    cleaned = filename.strip()
+    if not cleaned:
+        raise ValueError("Output file name cannot be empty.")
+    if any(char in INVALID_FILENAME_CHARS for char in cleaned):
+        raise ValueError(
+            'Output file name contains invalid characters: < > : " / \\ | ? *'
+        )
+    if cleaned in {".", ".."}:
+        raise ValueError("Output file name is invalid.")
+    if cleaned.endswith((" ", ".")):
+        raise ValueError(
+            "Output file name must not end with a space or period for Windows compatibility."
+        )
+    if any(ord(char) < 32 for char in cleaned):
+        raise ValueError("Output file name contains unsupported control characters.")
+
+    stem = Path(cleaned).stem.upper()
+    if stem in WINDOWS_RESERVED_NAMES:
+        raise ValueError(
+            f"Output file name '{cleaned}' is reserved on Windows. Please choose another name."
+        )
+
+    if not cleaned.lower().endswith(".pdf"):
+        cleaned = f"{cleaned}.pdf"
+    return cleaned
+
+
+def build_output_path(
+    content_path: Path,
+    output_dir: Path | None = None,
+    output_name: str | None = None,
+) -> Path:
+    target_dir = (output_dir or content_path.parent).expanduser().resolve()
+    filename = (
+        normalize_output_filename(output_name)
+        if output_name is not None
+        else default_output_filename(content_path)
+    )
+    return target_dir / filename
+
+
+def validate_paths(
+    content_path: Path,
+    bookmarks_path: Path,
+    output_path: Path,
+    *,
+    allow_overwrite: bool = False,
+) -> None:
+    if not content_path.exists() or not content_path.is_file():
+        raise FileNotFoundError(f"Content PDF not found: {content_path}")
+    if not bookmarks_path.exists() or not bookmarks_path.is_file():
+        raise FileNotFoundError(f"Bookmarks PDF not found: {bookmarks_path}")
+    if output_path == content_path or output_path == bookmarks_path:
+        raise ValueError(
+            "Output path must be different from both input PDFs to avoid overwriting them."
+        )
+    if output_path.exists() and not allow_overwrite:
+        raise FileExistsError(
+            f"Output file already exists: {output_path}\n"
+            "Pass --force to overwrite it."
+        )
 
 
 def page_size(page) -> tuple[float, float]:
@@ -237,22 +316,18 @@ def main() -> int:
     output_path = (
         args.output.expanduser().resolve()
         if args.output
-        else content_path.with_name(f"{content_path.stem}_with_bookmarks.pdf")
+        else build_output_path(content_path)
     )
 
-    if not content_path.exists():
-        raise SystemExit(f"Content PDF not found: {content_path}")
-    if not bookmarks_path.exists():
-        raise SystemExit(f"Bookmarks PDF not found: {bookmarks_path}")
-    if output_path == content_path or output_path == bookmarks_path:
-        raise SystemExit(
-            "Output path must be different from both input PDFs to avoid overwriting them."
+    try:
+        validate_paths(
+            content_path,
+            bookmarks_path,
+            output_path,
+            allow_overwrite=args.force,
         )
-    if output_path.exists() and not args.force:
-        raise SystemExit(
-            f"Output file already exists: {output_path}\n"
-            "Pass --force to overwrite it."
-        )
+    except (FileNotFoundError, FileExistsError, ValueError) as exc:
+        raise SystemExit(str(exc))
 
     copied_count = merge_bookmarks(content_path, bookmarks_path, output_path)
     print(f"Created: {output_path}")

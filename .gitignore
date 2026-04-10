@@ -1,3 +1,9 @@
 /merged_typeA_with_bookmarks.pdf
 /typeA.pdf
 /typeB.pdf
+/.venv-build/
+/.pyinstaller/
+/build/
+/dist/
+/__pycache__/
+.DS_Store
