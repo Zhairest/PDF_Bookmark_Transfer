@@ -2,7 +2,14 @@
 
 # PDF Bookmark Transfer
 
-Transfer PDF sidebar bookmarks from one PDF to another while preserving the high-resolution page content.
+<p><strong>Transfer bookmark outlines from one PDF onto another PDF with sharper page content, without recompressing the pages.</strong></p>
+
+<p>
+  <a href="#downloads--releases">Downloads</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#usage">Usage</a> ·
+  <a href="#build--packaging">Packaging</a>
+</p>
 
 [简体中文](./README.md) | [English](./README_EN.md)
 
@@ -10,251 +17,274 @@ Transfer PDF sidebar bookmarks from one PDF to another while preserving the high
   <img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/GUI-PySide6%20%2F%20Qt-0F766E" alt="PySide6 / Qt">
   <img src="https://img.shields.io/badge/PDF-pypdf-2563EB" alt="pypdf">
-  <img src="https://img.shields.io/badge/Use%20Case-Word%20PDF%20Export-F97316" alt="Use Case">
+  <img src="https://img.shields.io/badge/Platforms-macOS%20%7C%20Windows-111827" alt="Platforms">
+  <img src="https://img.shields.io/badge/License-MIT-16A34A" alt="MIT License">
+  <img src="https://img.shields.io/badge/Release-macOS%20zip%20ready-0F766E" alt="Release ready">
 </p>
 
 </div>
 
-> One PDF export keeps the images sharp but loses the sidebar bookmarks. Another export keeps the bookmarks but downgrades image quality. This project combines them into a single output: high-resolution pages plus working PDF bookmarks.
-
-## UI Mockup
-
-The image below is a layout mockup, not a real screenshot.
-
-Notes:
-
-- it is meant to explain the structure and interaction flow
-- `PySide6 / Qt` follows platform-native behavior across macOS, Windows, and Linux
-- actual button appearance, spacing, and fonts will vary by platform
-
 <div align="center">
-  <img src="./docs/assets/gui-preview.svg" alt="GUI mockup" width="940">
+  <img src="./docs/assets/project-hero.svg" alt="Project hero" width="1080">
 </div>
 
-## Why This Project
+## Overview
 
-When exporting PDFs from Word, you may end up with two different files:
+PDF exports from Word or similar tools often leave you with two versions of the same document:
 
-- `High-resolution content PDF`
-  Description: keeps the page content sharp, but has no PDF sidebar bookmarks
-- `Bookmark source PDF`
-  Description: contains a valid bookmark tree, but the page content is not sharp enough
+| Input file | Typical characteristic | Role in this project |
+| --- | --- | --- |
+| `Content PDF` | Sharp page content and high-resolution images, but no sidebar bookmarks | Provides the final page content |
+| `Bookmark source PDF` | Contains a valid bookmark tree, but page quality is not good enough | Provides the outline structure |
 
-This project is built to:
+`PDF Bookmark Transfer` combines the two:
 
-- keep the pages from the `High-resolution content PDF`
-- copy bookmarks from the `Bookmark source PDF`
+- keep the pages from the `Content PDF`
+- copy the bookmark tree from the `Bookmark source PDF`
 - produce one merged PDF with both benefits
 
-## Features
+This avoids page re-rendering and eliminates the need to rebuild bookmarks manually.
 
-- Preserves the page content from the high-resolution PDF without re-rendering pages
-- Copies the sidebar bookmark structure from the bookmark source PDF
-- Preserves outline hierarchy, open state, font styles, and colors
-- Keeps page-internal jump targets as accurately as possible
-- Includes a desktop GUI for point-and-click conversion
-- Includes a CLI for automation and scripting
-- The desktop GUI is built with `PySide6 / Qt`
-- Handles Chinese bookmark titles correctly to avoid garbled text
+## Downloads & Releases
 
-## Supported Platforms
+| Channel | Recommended artifact | Notes |
+| --- | --- | --- |
+| Source checkout | This repository | Best for developers; includes both the CLI and the `PySide6 / Qt` desktop app |
+| macOS desktop app | `PDF Bookmark Transfer-macOS.zip` | Recommended asset for GitHub Releases and direct end-user downloads |
+| macOS local bundle | `PDF Bookmark Transfer.app` | Useful for local testing and packaging verification |
+| Windows desktop app | Planned next | The core logic is already compatible; a packaged `.exe` can be added next |
 
-- macOS
-  Description: Qt uses the native macOS windowing and interaction model
-- Windows
-  Description: Qt uses native Windows styling and more stable high-DPI behavior
+If you publish this repository on GitHub, `PDF Bookmark Transfer-macOS.zip` is the best first desktop asset to upload under Releases.
 
-Platform notes:
+## Highlights
 
-- `PySide6 / Qt` follows native or near-native platform behavior
-- the README graphic is a mockup, not a pixel-perfect screenshot
-- the CLI and core PDF merge logic are platform-agnostic; most differences are in desktop UI behavior
+- Preserves the original page content instead of redrawing or recompressing pages
+- Copies the PDF bookmark tree while keeping its hierarchy
+- Preserves bookmark open state, color, bold, and italic styling where available
+- Scales jump coordinates proportionally when page sizes differ slightly
+- Sets the output PDF to open with the outline pane visible
+- Includes both a desktop GUI and a CLI workflow
+- Uses `PySide6 / Qt` for a more reliable macOS and Windows desktop experience
+- Validates output file names with Windows compatibility in mind
+
+## Interface Preview
+
+> The image below is an interface illustration, not a literal screenshot. Actual widget appearance follows the native `PySide6 / Qt` style of the host platform.
+
+<div align="center">
+  <img src="./docs/assets/gui-preview.svg" alt="GUI preview" width="940">
+</div>
 
 ## Workflow
 
 ```mermaid
 flowchart LR
-    A[High-resolution content PDF<br/>keep page content] --> C[PDF Bookmark Transfer]
+    A[Content PDF<br/>keep sharp pages] --> C[PDF Bookmark Transfer]
     B[Bookmark source PDF<br/>extract outline tree] --> C
-    C --> D[Output PDF<br/>sharp pages + sidebar bookmarks]
+    C --> D[Output PDF<br/>sharp pages + clickable bookmarks]
 ```
 
-## Quick Start
+## Installation
 
-### 1. Requirements
+### Runtime Requirements
 
-- Python 3
+- Python 3.11+
 - `pypdf`
 - `PySide6-Essentials`
 - `shiboken6`
 
-Notes:
-
-- `pypdf` is used to read and write PDF files
-- `PySide6-Essentials` and `shiboken6` are used for the desktop GUI
-
 Install dependencies:
 
 ```bash
-python3 -m pip install pypdf PySide6-Essentials shiboken6
+python3 -m pip install -r requirements.txt
 ```
 
-### 2. Run the GUI
+If you only need the CLI, `pypdf` is the only core runtime dependency.
 
-If you want a point-and-click workflow:
+## Usage
+
+### Desktop GUI
+
+Launch the GUI:
 
 ```bash
 python3 pdf_bookmark_transfer_app.py
 ```
 
-Steps:
+Typical flow:
 
-1. Select the `High-resolution content PDF`
+1. Select the `Content PDF`
 2. Select the `Bookmark source PDF`
 3. Edit the output file name if needed
-4. Choose the output directory if needed
-5. Click the `开始转换` button
+4. Change the output directory if needed
+5. Click `开始转换`
 
 Default behavior:
 
-- The output directory defaults to the same folder as the high-resolution content PDF
-- The output name defaults to the original file name plus `_with_bookmarks.pdf`
-- If the output file already exists, the app asks for confirmation before overwriting it
+- the output directory defaults to the same folder as the `Content PDF`
+- the output file name defaults to the source name plus `_with_bookmarks.pdf`
+- if the output file already exists, the app asks for confirmation before overwriting it
 
-### 3. Run the CLI
+### Command Line
 
-If you prefer the command line:
+CLI example:
 
 ```bash
 python3 merge_pdf_bookmarks.py \
-  --content "high-res.pdf" \
+  --content "content.pdf" \
   --bookmarks "bookmark-source.pdf" \
-  --output "high-res_with_bookmarks.pdf"
+  --output "content_with_bookmarks.pdf"
 ```
 
 Supported arguments:
 
-- `--content`
-  Description: the PDF whose page content should be preserved
-- `--bookmarks`
-  Description: the PDF whose bookmarks should be copied
-- `--output`
-  Description: output PDF path
-- `--force`
-  Description: overwrite the output file if it already exists
+- `--content`: the PDF whose page content should be preserved
+- `--bookmarks`: the PDF whose bookmark tree should be copied
+- `--output`: output file path
+- `--force`: overwrite the output file if it already exists
 
-If `--output` is omitted, the tool creates a default output path next to the content PDF.
+If `--output` is omitted, the tool generates a default file name next to the `Content PDF`.
 
-### 4. Build a macOS `.app`
+## Build & Packaging
 
-If you want a distributable macOS GUI application:
+The repository includes a ready-to-use `PyInstaller` setup for building a distributable macOS GUI application.
 
 ```bash
 python3 -m venv .venv-build
-./.venv-build/bin/python -m pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple PyInstaller pypdf PySide6-Essentials shiboken6
+./.venv-build/bin/python -m pip install -r requirements-build.txt
 ./build_macos_app.sh
 ```
 
 Build outputs:
 
 - `dist/PDF Bookmark Transfer.app`
-  Description: the macOS GUI application bundle
 - `dist/PDF Bookmark Transfer-macOS.zip`
-  Description: the zipped distribution artifact, better suited for sharing
 
-## How It Works
+Release recommendations:
 
-This project does not try to rebuild pages or recompose page graphics.
+- use `PDF Bookmark Transfer-macOS.zip` as the primary desktop download asset on GitHub Releases
+- keep the source-based installation path for Windows users and automation workflows
+- add Developer ID signing, notarization, and checksums later if you want a polished public macOS distribution
+
+## Technical Approach
+
+The project does not rebuild page graphics or re-export the document from scratch.
 
 Instead, it follows a more reliable path:
 
-1. Keep all pages from the `High-resolution content PDF`
-2. Read the outline tree from the `Bookmark source PDF`
-3. Recursively copy bookmark hierarchy, styles, and destinations
-4. Write a new merged PDF
+1. load the `Content PDF` and keep its pages intact
+2. read the outline / bookmark tree from the `Bookmark source PDF`
+3. recursively copy hierarchy, styling, and destinations
+4. write a new output PDF and set the default page mode to show outlines
 
-Benefits of this approach:
+Why this works well:
 
 - sharp images are not recompressed
-- conversion is fast
-- output stays close to the original export
-- the implementation is stable and easy to reuse
+- conversion stays fast
+- output remains close to the original high-quality export
+- the implementation is simple, predictable, and automation-friendly
 
-## What Gets Preserved
+## Compatibility
 
-The tool tries to preserve:
+- `macOS`: desktop GUI available through `PySide6 / Qt`, with bundled `PyInstaller` packaging
+- `Windows`: core logic and GUI design are compatible, and output name validation respects Windows file-name rules
+- `CLI`: the PDF-processing logic does not depend on platform-specific APIs
 
-- bookmark hierarchy
-- expanded / collapsed state
-- bookmark colors
-- bold / italic styles
-- page-internal jump positions
-- default PDF page mode for showing the outline pane
-- Chinese bookmark titles
+## Constraints
 
-## Limitations
+Direct bookmark transfer is only safe when both PDFs represent the same pagination model:
 
-This approach assumes that:
+- same page count
+- same page order
+- the same section appears on the same page in both files
 
-- both PDFs have the same page count
-- both PDFs use the same page order
-- the same section appears on the same page in both PDFs
-
-If any of the following happens, direct bookmark transfer is no longer safe:
+Direct transfer is not suitable when:
 
 - the PDFs have different page counts
-- one PDF contains extra blank pages
-- pagination differs between the two files
+- one file contains extra blank pages
+- pagination changed between the two exports
 - the same section no longer lands on the same page
 
-In such cases, you need an explicit page-mapping layer instead of direct outline transfer.
+In these cases, you need an explicit page-mapping layer instead of direct outline transfer.
 
-## Repository Structure
+## Troubleshooting
+
+- the tool fails if the `Bookmark source PDF` has no outline tree
+- the tool fails if a bookmark points beyond the page range of the `Content PDF`
+- the output path must not be identical to either input file
+- the output name must be a file name only, not a path containing separators
+- if the Qt runtime is missing, the GUI prompts you to install `PySide6-Essentials` and `shiboken6`
+
+## Project Docs
+
+- [CONTRIBUTING.md](./CONTRIBUTING.md): contribution and collaboration guide
+- [CHANGELOG.md](./CHANGELOG.md): version history
+- [RELEASING.md](./RELEASING.md): release workflow guide
+- [LICENSE](./LICENSE): open-source license
+- `requirements.txt`: runtime dependencies
+- `requirements-build.txt`: packaging dependencies
+
+## Repository Layout
 
 ```text
 .
 ├── docs/
 │   └── assets/
-│       └── gui-preview.svg
+│       ├── gui-preview.svg
+│       └── project-hero.svg
+├── LICENSE
+├── CHANGELOG.md
+├── CONTRIBUTING.md
 ├── build_macos_app.sh
 ├── merge_pdf_bookmarks.py
 ├── pdf_bookmark_transfer_app.py
 ├── pdf_bookmark_transfer_app.spec
 ├── README.md
-└── README_EN.md
+├── README_EN.md
+├── RELEASING.md
+├── requirements-build.txt
+└── requirements.txt
 ```
 
 Key files:
 
-- `merge_pdf_bookmarks.py`
-  CLI entry point and core merge logic
-- `pdf_bookmark_transfer_app.py`
-  `PySide6 / Qt` desktop GUI entry point
-- `pdf_bookmark_transfer_app.spec`
-  PyInstaller configuration for the macOS app bundle
-- `build_macos_app.sh`
-  one-command script for building the macOS `.app` and `.zip`
-- `docs/assets/gui-preview.svg`
-  preview asset used by the README
+- `LICENSE`: open-source license for the project
+- `CHANGELOG.md`: version history
+- `CONTRIBUTING.md`: contribution guide
+- `RELEASING.md`: release workflow
+- `merge_pdf_bookmarks.py`: CLI entry point and core bookmark-transfer logic
+- `pdf_bookmark_transfer_app.py`: desktop GUI built with `PySide6 / Qt`
+- `pdf_bookmark_transfer_app.spec`: `PyInstaller` spec for the macOS app bundle
+- `build_macos_app.sh`: script that builds the macOS `.app` and `.zip`
+- `requirements.txt`: runtime dependency list
+- `requirements-build.txt`: packaging dependency list
+- `docs/assets/project-hero.svg`: hero image used at the top of the README
 
-## Local Verification
+## Verification
 
-The project has already been validated locally with sample PDFs. Verified results include:
+The project has already been verified locally, including:
 
-- a merged PDF is generated successfully
-- the output page count remains unchanged
-- sidebar bookmarks are readable
-- Chinese bookmark titles display correctly
+- successful generation of a merged PDF from sample inputs
+- unchanged output page count
+- readable and clickable sidebar bookmarks
+- correct display of Chinese bookmark titles
+- successful macOS app packaging, including `codesign --verify --deep --strict`
 
-## Notes
+## Roadmap
 
-- the output file must not reuse either input file path
-- the output name should only be a file name, not a path with separators
-- if the Qt runtime is missing, the GUI will prompt you to install `PySide6-Essentials` and `shiboken6` first
-- the tool fails if the bookmark source PDF has no outline tree
-- the tool fails if a bookmark points beyond the page range of the content PDF
-- if the page sizes differ slightly, jump coordinates are scaled proportionally
+- add Windows `PyInstaller` packaging for a more end-user-friendly `.exe`
+- support optional page mapping for PDFs whose pagination no longer matches exactly
+- add real GUI screenshots once the interface is fully settled, either alongside or instead of the current illustration
+
+## Contributing
+
+Issues and pull requests are welcome, especially in areas like:
+
+- Windows packaging
+- more real-world PDF samples and regression tests
+- advanced bookmark and page-mapping workflows
+- release automation and CI
 
 ## License
 
-No license file is included yet. If you plan to publish this repository publicly, adding a `LICENSE` file is recommended.
+Released under the [MIT License](./LICENSE).
