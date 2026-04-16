@@ -9,7 +9,7 @@ $env:PYINSTALLER_CONFIG_DIR = Join-Path $scriptDir ".pyinstaller"
 $distPath = Join-Path $scriptDir "dist"
 $workPath = Join-Path $scriptDir "build"
 $appDir = Join-Path $distPath "PDF Bookmark Transfer"
-$zipPath = Join-Path $distPath "PDF Bookmark Transfer-windows.zip"
+$zipPath = Join-Path $distPath "PDF.Bookmark.Transfer-windows.zip"
 
 if (-not (Test-Path $venvPython)) {
     Write-Error "Missing build environment: $venvPython`nCreate it first with: python -m venv .venv-build"

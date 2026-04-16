@@ -49,8 +49,8 @@ Official desktop packages are distributed through GitHub Releases and built auto
 
 | Platform | Release asset | Download | Notes |
 | --- | --- | --- | --- |
-| macOS | `PDF Bookmark Transfer-macOS.zip` | [Latest macOS Download](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-macOS.zip) | Extract to get the `.app` desktop application |
-| Windows | `PDF Bookmark Transfer-windows.zip` | [Latest Windows Download](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-windows.zip) | Extract to get the desktop application directory containing `PDF Bookmark Transfer.exe` |
+| macOS | `PDF.Bookmark.Transfer-macOS.zip` | [Latest macOS Download](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF.Bookmark.Transfer-macOS.zip) | Extract to get the `.app` desktop application |
+| Windows | `PDF.Bookmark.Transfer-windows.zip` | [Latest Windows Download](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF.Bookmark.Transfer-windows.zip) | Extract to get the desktop application directory containing `PDF Bookmark Transfer.exe` |
 | Checksums | `SHA256SUMS.txt` | [Latest Checksums](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/SHA256SUMS.txt) | SHA-256 verification file |
 | Release history | GitHub Releases | [Releases Page](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases) | Historical versions and release notes |
 
@@ -150,8 +150,8 @@ The official desktop release flow is defined in [`.github/workflows/release.yml`
 
 When a version tag matching `v*` is pushed, the workflow automatically:
 
-- builds `PDF Bookmark Transfer-macOS.zip` on `macos-14`
-- builds `PDF Bookmark Transfer-windows.zip` on `windows-latest`
+- builds `PDF.Bookmark.Transfer-macOS.zip` on `macos-14`
+- builds `PDF.Bookmark.Transfer-windows.zip` on `windows-latest`
 - generates `SHA256SUMS.txt`
 - attaches all release assets to the corresponding GitHub Release
 

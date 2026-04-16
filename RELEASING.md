@@ -26,7 +26,7 @@ python3 -m venv .venv-build
 Expected macOS artifacts:
 
 - `dist/PDF Bookmark Transfer.app`
-- `dist/PDF Bookmark Transfer-macOS.zip`
+- `dist/PDF.Bookmark.Transfer-macOS.zip`
 
 ### Windows
 
@@ -36,7 +36,7 @@ Expected macOS artifacts:
 
 Expected Windows artifact:
 
-- `dist/PDF Bookmark Transfer-windows.zip`
+- `dist/PDF.Bookmark.Transfer-windows.zip`
 
 ## 4. Automated GitHub release flow
 
@@ -72,8 +72,8 @@ Recommended release sequence:
 4. Wait for the `release` workflow to finish.
 5. Confirm that the release contains:
 
-- `PDF Bookmark Transfer-macOS.zip`
-- `PDF Bookmark Transfer-windows.zip`
+- `PDF.Bookmark.Transfer-macOS.zip`
+- `PDF.Bookmark.Transfer-windows.zip`
 - `SHA256SUMS.txt`
 
 Release notes should summarize:

@@ -6,7 +6,7 @@ from pathlib import Path
 
 project_root = Path(SPECPATH)
 bundle_name = "PDF Bookmark Transfer"
-app_version = "0.2.1"
+app_version = "0.2.2"
 entry_script = str(project_root / "pdf_bookmark_transfer_app.py")
 
 datas = []
@@ -66,7 +66,7 @@ if sys.platform == "darwin":
             "CFBundleDisplayName": bundle_name,
             "CFBundleName": bundle_name,
             "CFBundleShortVersionString": app_version,
-            "CFBundleVersion": "3",
+            "CFBundleVersion": "4",
             "LSMinimumSystemVersion": "10.15.0",
             "NSHighResolutionCapable": True,
         },

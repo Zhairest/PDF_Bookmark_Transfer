@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macos-release
-          path: dist/PDF Bookmark Transfer-macOS.zip
+          path: dist/PDF.Bookmark.Transfer-macOS.zip
           if-no-files-found: error
 
   build-windows:
@@ -82,7 +82,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: windows-release
-          path: dist/PDF Bookmark Transfer-windows.zip
+          path: dist/PDF.Bookmark.Transfer-windows.zip
           if-no-files-found: error
 
   publish-release:
@@ -110,8 +110,8 @@ jobs:
           cat <<'EOF' > release-assets/RELEASE_NOTES.md
           ## Release Assets
 
-          - `PDF Bookmark Transfer-macOS.zip`: desktop GUI package for macOS
-          - `PDF Bookmark Transfer-windows.zip`: desktop GUI package for Windows
+          - `PDF.Bookmark.Transfer-macOS.zip`: desktop GUI package for macOS
+          - `PDF.Bookmark.Transfer-windows.zip`: desktop GUI package for Windows
           - `SHA256SUMS.txt`: SHA-256 checksums for release verification
 
           ## Notes
@@ -124,8 +124,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            release-assets/PDF Bookmark Transfer-macOS.zip
-            release-assets/PDF Bookmark Transfer-windows.zip
+            release-assets/PDF.Bookmark.Transfer-macOS.zip
+            release-assets/PDF.Bookmark.Transfer-windows.zip
             release-assets/SHA256SUMS.txt
           body_path: release-assets/RELEASE_NOTES.md
           draft: false

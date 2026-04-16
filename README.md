@@ -49,8 +49,8 @@
 
 | 平台 | 发布资产 | 下载入口 | 说明 |
 | --- | --- | --- | --- |
-| macOS | `PDF Bookmark Transfer-macOS.zip` | [下载 macOS 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-macOS.zip) | 解压后得到 `.app` 图形界面应用 |
-| Windows | `PDF Bookmark Transfer-windows.zip` | [下载 Windows 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-windows.zip) | 解压后得到包含 `PDF Bookmark Transfer.exe` 的桌面应用目录 |
+| macOS | `PDF.Bookmark.Transfer-macOS.zip` | [下载 macOS 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF.Bookmark.Transfer-macOS.zip) | 解压后得到 `.app` 图形界面应用 |
+| Windows | `PDF.Bookmark.Transfer-windows.zip` | [下载 Windows 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF.Bookmark.Transfer-windows.zip) | 解压后得到包含 `PDF Bookmark Transfer.exe` 的桌面应用目录 |
 | 校验文件 | `SHA256SUMS.txt` | [下载校验文件](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/SHA256SUMS.txt) | SHA-256 校验值 |
 | 历史版本 | GitHub Releases | [Releases 页面](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases) | 查看所有版本与发布说明 |
 
@@ -150,8 +150,8 @@ python3 merge_pdf_bookmarks.py \
 
 当推送 `v*` 格式的版本 tag 时，工作流会自动执行以下任务：
 
-- 在 `macos-14` runner 上构建 `PDF Bookmark Transfer-macOS.zip`
-- 在 `windows-latest` runner 上构建 `PDF Bookmark Transfer-windows.zip`
+- 在 `macos-14` runner 上构建 `PDF.Bookmark.Transfer-macOS.zip`
+- 在 `windows-latest` runner 上构建 `PDF.Bookmark.Transfer-windows.zip`
 - 生成 `SHA256SUMS.txt`
 - 将构建产物自动附加到对应的 GitHub Release
 

@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file.
 - optional page-mapping support for PDFs with shifted pagination
 - additional real-world validation samples
 
+## [0.2.2] - 2026-04-16
+
+### Fixed
+
+- aligned local package output names, release assets, and README download links
+- standardized GitHub release asset names to `PDF.Bookmark.Transfer-*.zip`
+
 ## [0.2.1] - 2026-04-16
 
 ### Fixed

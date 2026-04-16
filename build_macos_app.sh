@@ -8,7 +8,7 @@ cd "$SCRIPT_DIR"
 VENV_PYTHON="$SCRIPT_DIR/.venv-build/bin/python"
 export PYINSTALLER_CONFIG_DIR="$SCRIPT_DIR/.pyinstaller"
 APP_PATH="$SCRIPT_DIR/dist/PDF Bookmark Transfer.app"
-ZIP_PATH="$SCRIPT_DIR/dist/PDF Bookmark Transfer-macOS.zip"
+ZIP_PATH="$SCRIPT_DIR/dist/PDF.Bookmark.Transfer-macOS.zip"
 
 if [[ ! -x "$VENV_PYTHON" ]]; then
   echo "Missing build environment: $VENV_PYTHON" >&2
