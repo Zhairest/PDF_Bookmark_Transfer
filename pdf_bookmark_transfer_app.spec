@@ -1,10 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import sys
 from pathlib import Path
 
 
 project_root = Path(SPECPATH)
 bundle_name = "PDF Bookmark Transfer"
+app_version = "0.2.0"
 entry_script = str(project_root / "pdf_bookmark_transfer_app.py")
 
 datas = []
@@ -54,17 +56,18 @@ coll = COLLECT(
     name=bundle_name,
 )
 
-app = BUNDLE(
-    coll,
-    name=f"{bundle_name}.app",
-    icon=None,
-    bundle_identifier="com.zhair.pdfbookmarktransfer",
-    info_plist={
-        "CFBundleDisplayName": bundle_name,
-        "CFBundleName": bundle_name,
-        "CFBundleShortVersionString": "0.1.0",
-        "CFBundleVersion": "1",
-        "LSMinimumSystemVersion": "10.15.0",
-        "NSHighResolutionCapable": True,
-    },
-)
+if sys.platform == "darwin":
+    app = BUNDLE(
+        coll,
+        name=f"{bundle_name}.app",
+        icon=None,
+        bundle_identifier="com.zhair.pdfbookmarktransfer",
+        info_plist={
+            "CFBundleDisplayName": bundle_name,
+            "CFBundleName": bundle_name,
+            "CFBundleShortVersionString": app_version,
+            "CFBundleVersion": "2",
+            "LSMinimumSystemVersion": "10.15.0",
+            "NSHighResolutionCapable": True,
+        },
+    )

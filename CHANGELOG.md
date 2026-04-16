@@ -6,9 +6,17 @@ All notable changes to this project will be documented in this file.
 
 ### Planned
 
-- Windows desktop packaging
 - optional page-mapping support for PDFs with shifted pagination
 - additional real-world validation samples
+
+## [0.2.0] - 2026-04-16
+
+### Added
+
+- Windows desktop packaging via `PyInstaller`
+- automated GitHub Actions workflow for macOS and Windows release assets
+- release asset checksums and tag-driven GitHub Releases publishing
+- expanded project documentation for downloads, release workflow, and public repository publishing
 
 ## [0.1.0] - 2026-04-10
 

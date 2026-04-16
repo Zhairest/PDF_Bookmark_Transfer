@@ -38,6 +38,14 @@ python3 -m venv .venv-build
 ./build_macos_app.sh
 ```
 
+Build the Windows app package:
+
+```powershell
+python -m venv .venv-build
+.\.venv-build\Scripts\python.exe -m pip install -r requirements-build.txt
+.\build_windows_app.ps1
+```
+
 ## Contribution Guidelines
 
 - Keep the terminology consistent: `Content PDF` and `Bookmark source PDF`
@@ -45,6 +53,7 @@ python3 -m venv .venv-build
 - When updating the GUI, keep macOS and Windows behavior in mind
 - If you change the workflow or packaging process, update both `README.md` and `README_EN.md`
 - If you add or change release steps, update `CHANGELOG.md`
+- Keep `.github/workflows/release.yml` aligned with the documented release process
 
 ## Pull Requests
 

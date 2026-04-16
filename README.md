@@ -5,10 +5,10 @@
 <p><strong>将一份 PDF 的目录书签迁移到另一份页面更清晰的 PDF 中，生成“高清页面 + 可点击侧边目录”的最终文件。</strong></p>
 
 <p>
-  <a href="#downloads--releases">下载</a> ·
+  <a href="#official-downloads">官方下载</a> ·
   <a href="#installation">安装</a> ·
   <a href="#usage">使用方式</a> ·
-  <a href="#build--packaging">打包发布</a>
+  <a href="#release--automation">发布与自动构建</a>
 </p>
 
 [简体中文](./README.md) | [English](./README_EN.md)
@@ -18,8 +18,10 @@
   <img src="https://img.shields.io/badge/GUI-PySide6%20%2F%20Qt-0F766E" alt="PySide6 / Qt">
   <img src="https://img.shields.io/badge/PDF-pypdf-2563EB" alt="pypdf">
   <img src="https://img.shields.io/badge/Platforms-macOS%20%7C%20Windows-111827" alt="Platforms">
+  <img src="https://img.shields.io/github/v/release/Zhairest/PDF_Bookmark_Transfer?display_name=tag" alt="Latest Release">
+  <img src="https://img.shields.io/github/downloads/Zhairest/PDF_Bookmark_Transfer/total" alt="GitHub Downloads">
+  <img src="https://img.shields.io/github/actions/workflow/status/Zhairest/PDF_Bookmark_Transfer/release.yml?branch=main&label=release" alt="Release Workflow">
   <img src="https://img.shields.io/badge/License-MIT-16A34A" alt="MIT License">
-  <img src="https://img.shields.io/badge/Release-macOS%20zip%20ready-0F766E" alt="Release ready">
 </p>
 
 </div>
@@ -30,46 +32,43 @@
 
 ## Overview
 
-当 Word 或其他工具导出 PDF 时，常见会得到两种文件：
+`PDF Bookmark Transfer` 面向这样一类常见场景：同一份文档往往会导出两种 PDF，一份页面内容清晰但没有侧边目录，另一份带有完整目录书签但图片和页面质量不够理想。
 
-| 输入文件 | 特点 | 在本项目中的作用 |
+本项目将两者融合为一份成品 PDF：
+
+| 输入文件 | 典型特征 | 在本项目中的角色 |
 | --- | --- | --- |
-| `内容 PDF` | 页面内容清晰、图片分辨率高，但没有 PDF 侧边目录 | 作为最终输出的页面来源 |
-| `目录来源 PDF` | 带有完整 PDF 目录书签，但页面内容不够清晰 | 作为目录结构的来源 |
+| `内容 PDF` | 页面内容清晰、图片分辨率高，但没有 PDF 侧边目录 | 提供最终输出的页面内容 |
+| `目录来源 PDF` | 带有完整 PDF 目录书签，但页面质量不够理想 | 提供目录树、跳转目标和书签样式 |
 
-`PDF Bookmark Transfer` 的目标很直接：
+输出结果保留 `内容 PDF` 的页面，同时复制 `目录来源 PDF` 的目录结构，避免二次压缩页面或手工重建目录。
 
-- 保留 `内容 PDF` 的页面内容
-- 复制 `目录来源 PDF` 的书签树
-- 输出一份新的融合版 PDF
+## Official Downloads
 
-这意味着你不需要重新渲染页面，也不需要手工重建目录。
+官方桌面包通过 GitHub Releases 分发，并由 GitHub Actions 自动构建。
 
-## Downloads & Releases
+| 平台 | 发布资产 | 下载入口 | 说明 |
+| --- | --- | --- | --- |
+| macOS | `PDF Bookmark Transfer-macOS.zip` | [下载 macOS 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-macOS.zip) | 解压后得到 `.app` 图形界面应用 |
+| Windows | `PDF Bookmark Transfer-windows.zip` | [下载 Windows 最新版](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/PDF%20Bookmark%20Transfer-windows.zip) | 解压后得到包含 `PDF Bookmark Transfer.exe` 的桌面应用目录 |
+| 校验文件 | `SHA256SUMS.txt` | [下载校验文件](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases/latest/download/SHA256SUMS.txt) | SHA-256 校验值 |
+| 历史版本 | GitHub Releases | [Releases 页面](https://github.com/Zhairest/PDF_Bookmark_Transfer/releases) | 查看所有版本与发布说明 |
 
-| 渠道 | 推荐产物 | 说明 |
-| --- | --- | --- |
-| 源码运行 | 当前仓库 | 适合开发者，包含 CLI 和 `PySide6 / Qt` 图形界面 |
-| macOS 桌面应用 | `PDF Bookmark Transfer-macOS.zip` | 最适合发布到 GitHub Releases，方便终端用户直接下载和解压 |
-| macOS 本地调试 | `PDF Bookmark Transfer.app` | 适合本地测试或验证打包结果 |
-| Windows 桌面应用 | 计划补充 | 核心逻辑已兼容，后续可继续补 `.exe` 打包流程 |
+## Key Capabilities
 
-如果你准备把这个仓库公开发布，建议把 `PDF Bookmark Transfer-macOS.zip` 作为首个桌面版下载入口上传到 Releases。
-
-## Highlights
-
-- 保留原始页面内容，不重新压缩或重绘页面
+- 保留原始页面内容，不重新渲染或压缩页面
 - 复制 PDF 目录书签，并保留层级结构
 - 尽量保留展开状态、颜色、粗体、斜体等书签样式
-- 当两份 PDF 页面尺寸略有差异时，按比例修正跳转坐标
-- 输出文件默认直接打开侧边目录栏
-- 同时提供命令行工具和桌面图形界面
-- GUI 基于 `PySide6 / Qt`，更适合 macOS 与 Windows 的原生交互
-- 输出文件名会做跨平台校验，兼顾 Windows 文件名限制
+- 在页面尺寸略有差异时，按比例修正跳转坐标
+- 输出文件默认设置为打开时显示 PDF 目录栏
+- 提供 `PySide6 / Qt` 图形界面，适合桌面用户直接使用
+- 提供命令行入口，便于自动化、脚本化和批处理
+- 提供 macOS 与 Windows 桌面发布包
+- 通过版本 tag 自动构建并发布 GitHub Releases
 
 ## Interface Preview
 
-> 下图是界面结构示意图，不是逐像素一致的真实截图。实际窗口外观会随 `PySide6 / Qt` 在 macOS 或 Windows 上的原生风格而变化。
+> 下图为界面结构示意图，不是逐像素一致的真实截图。实际窗口外观会随 `PySide6 / Qt` 在 macOS 或 Windows 上的原生风格而变化。
 
 <div align="center">
   <img src="./docs/assets/gui-preview.svg" alt="GUI preview" width="940">
@@ -93,25 +92,25 @@ flowchart LR
 - `PySide6-Essentials`
 - `shiboken6`
 
-安装依赖：
+从源码运行时可安装：
 
 ```bash
 python3 -m pip install -r requirements.txt
 ```
 
-如果你只使用命令行版本，核心上只需要 `pypdf`。
+仅使用命令行时，核心依赖为 `pypdf`。
 
 ## Usage
 
 ### Desktop GUI
 
-启动图形界面：
+启动桌面图形界面：
 
 ```bash
 python3 pdf_bookmark_transfer_app.py
 ```
 
-使用流程：
+典型流程：
 
 1. 选择 `内容 PDF`
 2. 选择 `目录来源 PDF`
@@ -122,8 +121,8 @@ python3 pdf_bookmark_transfer_app.py
 默认行为：
 
 - 保存位置默认与 `内容 PDF` 相同
-- 输出文件名默认是原文件名追加 `_with_bookmarks.pdf`
-- 如果目标文件已存在，应用会先弹窗确认是否覆盖
+- 输出文件名默认追加 `_with_bookmarks.pdf`
+- 若目标文件已存在，转换前会先弹窗确认是否覆盖
 
 ### Command Line
 
@@ -143,145 +142,124 @@ python3 merge_pdf_bookmarks.py \
 - `--output`：输出文件路径
 - `--force`：当输出文件已存在时直接覆盖
 
-如果不传 `--output`，程序会默认输出到 `内容 PDF` 同目录下，并自动生成文件名。
+未传 `--output` 时，程序会默认在 `内容 PDF` 同目录下生成输出文件名。
 
-## Build & Packaging
+## Release & Automation
 
-仓库已经提供了 `PyInstaller` 打包配置，可直接生成适合 macOS 分发的 `.app` 和 `.zip`。
+官方桌面发布流程由 [`.github/workflows/release.yml`](./.github/workflows/release.yml) 驱动。
+
+当推送 `v*` 格式的版本 tag 时，工作流会自动执行以下任务：
+
+- 在 `macos-13` runner 上构建 `PDF Bookmark Transfer-macOS.zip`
+- 在 `windows-latest` runner 上构建 `PDF Bookmark Transfer-windows.zip`
+- 生成 `SHA256SUMS.txt`
+- 将构建产物自动附加到对应的 GitHub Release
+
+本地打包脚本：
+
+- [build_macos_app.sh](./build_macos_app.sh)：构建 macOS `.app` 与 `.zip`
+- [build_windows_app.ps1](./build_windows_app.ps1)：构建 Windows 发布目录与 `.zip`
+- [pdf_bookmark_transfer_app.spec](./pdf_bookmark_transfer_app.spec)：跨平台 `PyInstaller` 配置
+
+本地安装打包依赖：
 
 ```bash
 python3 -m venv .venv-build
 ./.venv-build/bin/python -m pip install -r requirements-build.txt
-./build_macos_app.sh
 ```
 
-构建产物：
+## Technical Notes
 
-- `dist/PDF Bookmark Transfer.app`
-- `dist/PDF Bookmark Transfer-macOS.zip`
+### What Is Preserved
 
-发布建议：
+- 目录层级结构
+- 展开 / 折叠状态
+- 目录颜色
+- 粗体 / 斜体样式
+- 页内跳转目标
+- PDF 默认打开时显示目录栏
+- 中文目录标题
 
-- 将 `PDF Bookmark Transfer-macOS.zip` 作为 GitHub Releases 的主下载文件
-- 保留源码安装方式，方便 Windows 用户或自动化场景使用
-- 后续若做正式公开分发，可继续补 Developer ID 签名、notarization 和校验文件
+### Assumptions
 
-## Technical Approach
-
-这个项目不是把两份 PDF 再“拼图式重导出”一遍，而是走一条更稳妥的路径：
-
-1. 读取 `内容 PDF`，完整保留其页面
-2. 读取 `目录来源 PDF` 的 outline / bookmarks 结构
-3. 递归复制书签层级、样式和跳转目标
-4. 写出新的 PDF，并默认设置为打开时显示目录栏
-
-这种做法的直接收益是：
-
-- 高清图片不会因为二次导出而被压缩
-- 转换速度更快
-- 输出结果更接近原始高质量 PDF
-- 实现逻辑简单、稳定，适合重复使用和自动化
-
-## Compatibility
-
-- `macOS`：提供基于 `PySide6 / Qt` 的桌面 GUI，并附带 `PyInstaller` 打包流程
-- `Windows`：核心逻辑与 GUI 设计已兼容，输出文件名也会避开 Windows 保留名和非法字符
-- `CLI`：核心 PDF 处理逻辑不依赖平台特有 API，适合脚本化调用
-
-## Constraints
-
-这个方案成立的前提是两份 PDF 的分页语义保持一致：
+直接迁移目录成立的前提是两份 PDF 的分页语义保持一致：
 
 - 页数一致
 - 页面顺序一致
-- 同一章节落在相同页码上
+- 同一章节位于相同页码
 
-以下情况不适合直接复制目录：
+### Non-Goals
+
+以下情况不属于直接书签迁移的适用范围：
 
 - 两份 PDF 页数不同
-- 其中一份额外插入了空白页
+- 其中一份插入了空白页
 - 两份 PDF 的分页位置已经变化
 - 同一章节在两份文件中不再位于同一页
 
-如果遇到这些情况，就需要额外的页码映射逻辑，而不是直接迁移书签。
+此类情况需要额外的页码映射逻辑，而不是直接复制目录。
 
-## Troubleshooting
+### Failure Conditions
 
-- 如果 `目录来源 PDF` 本身没有书签目录，程序会直接报错
-- 如果某个书签指向超出 `内容 PDF` 页数范围的页面，程序会直接报错
-- 输出文件不能与任一输入文件同名
-- 输出文件名只能填写文件名本身，不能包含路径分隔符
-- 如果系统未安装 Qt 依赖，GUI 会提示先安装 `PySide6-Essentials` 与 `shiboken6`
+- `目录来源 PDF` 本身没有书签目录
+- 书签指向超出 `内容 PDF` 页数范围的页面
+- 输出文件路径与任一输入文件相同
+- 输出文件名包含跨平台不兼容字符
 
-## Project Docs
-
-- [CONTRIBUTING.md](./CONTRIBUTING.md)：协作与提交流程
-- [CHANGELOG.md](./CHANGELOG.md)：版本变化记录
-- [RELEASING.md](./RELEASING.md)：发布流程说明
-- [LICENSE](./LICENSE)：开源许可证
-- `requirements.txt`：运行依赖
-- `requirements-build.txt`：打包依赖
-
-## Repository Layout
+## Project Structure
 
 ```text
 .
+├── .github/
+│   └── workflows/
+│       └── release.yml
 ├── docs/
 │   └── assets/
 │       ├── gui-preview.svg
 │       └── project-hero.svg
-├── LICENSE
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
-├── build_macos_app.sh
-├── merge_pdf_bookmarks.py
-├── pdf_bookmark_transfer_app.py
-├── pdf_bookmark_transfer_app.spec
+├── LICENSE
 ├── README.md
 ├── README_EN.md
 ├── RELEASING.md
+├── build_macos_app.sh
+├── build_windows_app.ps1
+├── merge_pdf_bookmarks.py
+├── pdf_bookmark_transfer_app.py
+├── pdf_bookmark_transfer_app.spec
 ├── requirements-build.txt
 └── requirements.txt
 ```
 
 关键文件：
 
-- `LICENSE`：项目开源许可证
-- `CHANGELOG.md`：版本变更记录
-- `CONTRIBUTING.md`：协作指南
-- `RELEASING.md`：发布步骤说明
-- `merge_pdf_bookmarks.py`：命令行入口与核心 PDF 目录迁移逻辑
-- `pdf_bookmark_transfer_app.py`：基于 `PySide6 / Qt` 的桌面图形界面
-- `pdf_bookmark_transfer_app.spec`：PyInstaller 打包配置
-- `build_macos_app.sh`：构建 macOS `.app` 与 `.zip` 的脚本
-- `requirements.txt`：运行依赖定义
-- `requirements-build.txt`：打包依赖定义
-- `docs/assets/project-hero.svg`：README 首页头图
+- [merge_pdf_bookmarks.py](./merge_pdf_bookmarks.py)：命令行入口与核心 PDF 目录迁移逻辑
+- [pdf_bookmark_transfer_app.py](./pdf_bookmark_transfer_app.py)：基于 `PySide6 / Qt` 的桌面图形界面
+- [pdf_bookmark_transfer_app.spec](./pdf_bookmark_transfer_app.spec)：跨平台 `PyInstaller` 打包配置
+- [build_macos_app.sh](./build_macos_app.sh)：macOS 打包脚本
+- [build_windows_app.ps1](./build_windows_app.ps1)：Windows 打包脚本
+- [`.github/workflows/release.yml`](./.github/workflows/release.yml)：GitHub Releases 自动构建与发布流程
+- [docs/assets/project-hero.svg](./docs/assets/project-hero.svg)：README 首页头图
+- [docs/assets/gui-preview.svg](./docs/assets/gui-preview.svg)：README 界面示意图
+
+## Development Docs
+
+- [CHANGELOG.md](./CHANGELOG.md)：版本变化记录
+- [CONTRIBUTING.md](./CONTRIBUTING.md)：协作与提交流程
+- [RELEASING.md](./RELEASING.md)：版本发布流程
+- [LICENSE](./LICENSE)：MIT 开源许可证
+- [requirements.txt](./requirements.txt)：运行依赖
+- [requirements-build.txt](./requirements-build.txt)：打包依赖
 
 ## Verification
 
-当前项目已完成本地验证，包括：
+当前仓库已完成的验证包括：
 
-- 使用样例 PDF 成功生成融合版输出文件
-- 输出页数保持不变
-- 侧边目录能够正常显示和点击跳转
-- 中文目录标题可正常显示
-- macOS `.app` 可成功打包，并通过 `codesign --verify --deep --strict` 结构校验
-
-## Roadmap
-
-- 补充 Windows `PyInstaller` 打包，生成更适合终端用户使用的 `.exe`
-- 为页码发生偏移的 PDF 增加可选页码映射能力
-- 在界面完全稳定后补充真实 GUI 截图，替换当前示意图或与之并列展示
-
-## Contributing
-
-欢迎通过 Issue 或 PR 一起完善这个项目，尤其适合补充这些方向：
-
-- Windows 打包流程
-- 更多真实 PDF 样例与回归测试
-- 更复杂的目录映射场景
-- 发布自动化与 CI 配置
+- 核心 PDF 目录迁移逻辑已通过本地样例验证
+- macOS `.app` 与 `.zip` 已完成本地打包
+- macOS `.app` 已通过 `codesign --verify --deep --strict` 结构校验
+- GitHub Release 工作流已配置为同时构建 macOS 与 Windows 发布资产
 
 ## License
 

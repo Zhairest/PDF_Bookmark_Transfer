@@ -1,0 +1,132 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build macOS Asset
+    runs-on: macos-13
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create build environment
+        run: python3 -m venv .venv-build
+
+      - name: Install build dependencies
+        run: |
+          ./.venv-build/bin/python -m pip install --upgrade pip
+          ./.venv-build/bin/python -m pip install -r requirements-build.txt
+
+      - name: Verify GUI import
+        run: |
+          ./.venv-build/bin/python -c "import pdf_bookmark_transfer_app as app; assert app.PYSIDE6_IMPORT_ERROR is None"
+          ./.venv-build/bin/python merge_pdf_bookmarks.py --help >/dev/null
+
+      - name: Build macOS package
+        run: ./build_macos_app.sh
+
+      - name: Upload macOS asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-release
+          path: dist/PDF Bookmark Transfer-macOS.zip
+          if-no-files-found: error
+
+  build-windows:
+    name: Build Windows Asset
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create build environment
+        run: python -m venv .venv-build
+
+      - name: Install build dependencies
+        shell: pwsh
+        run: |
+          .\.venv-build\Scripts\python.exe -m pip install --upgrade pip
+          .\.venv-build\Scripts\python.exe -m pip install -r requirements-build.txt
+
+      - name: Verify GUI import
+        shell: pwsh
+        run: |
+          .\.venv-build\Scripts\python.exe -c "import pdf_bookmark_transfer_app as app; assert app.PYSIDE6_IMPORT_ERROR is None"
+          .\.venv-build\Scripts\python.exe merge_pdf_bookmarks.py --help *> $null
+
+      - name: Build Windows package
+        shell: pwsh
+        run: ./build_windows_app.ps1
+
+      - name: Upload Windows asset
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: dist/PDF Bookmark Transfer-windows.zip
+          if-no-files-found: error
+
+  publish-release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs:
+      - build-macos
+      - build-windows
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download packaged assets
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-release"
+          merge-multiple: true
+          path: release-assets
+
+      - name: Generate checksums
+        working-directory: release-assets
+        run: sha256sum *.zip > SHA256SUMS.txt
+
+      - name: Prepare release notes
+        run: |
+          cat <<'EOF' > release-assets/RELEASE_NOTES.md
+          ## Release Assets
+
+          - `PDF Bookmark Transfer-macOS.zip`: desktop GUI package for macOS
+          - `PDF Bookmark Transfer-windows.zip`: desktop GUI package for Windows
+          - `SHA256SUMS.txt`: SHA-256 checksums for release verification
+
+          ## Notes
+
+          - Release packages are built automatically from the tagged source revision.
+          - The repository continues to provide both CLI and source-based GUI workflows.
+          EOF
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release-assets/PDF Bookmark Transfer-macOS.zip
+            release-assets/PDF Bookmark Transfer-windows.zip
+            release-assets/SHA256SUMS.txt
+          body_path: release-assets/RELEASE_NOTES.md
+          draft: false
+          prerelease: false
