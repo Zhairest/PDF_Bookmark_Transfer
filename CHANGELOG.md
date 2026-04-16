@@ -9,6 +9,13 @@ All notable changes to this project will be documented in this file.
 - optional page-mapping support for PDFs with shifted pagination
 - additional real-world validation samples
 
+## [0.2.1] - 2026-04-16
+
+### Fixed
+
+- switched the GitHub release workflow from the retired `macos-13` runner to `macos-14`
+- aligned release documentation with the supported macOS runner label
+
 ## [0.2.0] - 2026-04-16
 
 ### Added

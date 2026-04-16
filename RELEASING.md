@@ -44,7 +44,7 @@ The repository includes `.github/workflows/release.yml`.
 
 When a tag matching `v*` is pushed:
 
-- GitHub Actions builds the macOS package on `macos-13`
+- GitHub Actions builds the macOS package on `macos-14`
 - GitHub Actions builds the Windows package on `windows-latest`
 - both `.zip` files are attached to the GitHub Release
 - `SHA256SUMS.txt` is generated and uploaded with the release assets

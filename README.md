@@ -150,7 +150,7 @@ python3 merge_pdf_bookmarks.py \
 
 当推送 `v*` 格式的版本 tag 时，工作流会自动执行以下任务：
 
-- 在 `macos-13` runner 上构建 `PDF Bookmark Transfer-macOS.zip`
+- 在 `macos-14` runner 上构建 `PDF Bookmark Transfer-macOS.zip`
 - 在 `windows-latest` runner 上构建 `PDF Bookmark Transfer-windows.zip`
 - 生成 `SHA256SUMS.txt`
 - 将构建产物自动附加到对应的 GitHub Release

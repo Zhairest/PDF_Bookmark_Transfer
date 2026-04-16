@@ -150,7 +150,7 @@ The official desktop release flow is defined in [`.github/workflows/release.yml`
 
 When a version tag matching `v*` is pushed, the workflow automatically:
 
-- builds `PDF Bookmark Transfer-macOS.zip` on `macos-13`
+- builds `PDF Bookmark Transfer-macOS.zip` on `macos-14`
 - builds `PDF Bookmark Transfer-windows.zip` on `windows-latest`
 - generates `SHA256SUMS.txt`
 - attaches all release assets to the corresponding GitHub Release
